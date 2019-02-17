@@ -1,0 +1,134 @@
+$java Derive x
+
+Exp
+Literal
+Var
+x
+
+$java Derive 9
+
+Exp
+Literal
+Int
+9
+
+$java Derive "- 3 z"
+
+Exp
+- Exp Exp
+- Exp Literal
+- Exp Var
+- Exp z
+- Literal z
+- Int z
+- 3 z
+
+$java Derive "* 4 6"
+
+Exp
+* Exp Exp
+* Exp Literal
+* Exp Int
+* Exp 6
+* Literal 6
+* Int 6
+* 4 6
+
+$java Derive "+ x - z 3"
+
+Exp
++ Exp Exp
++ Exp - Exp Exp
++ Exp - Exp Literal
++ Exp - Exp Int
++ Exp - Exp 3
++ Exp - Literal 3
++ Exp - Var 3
++ Exp - z 3
++ Literal - z 3
++ Var - z 3
++ x - z 3
+
+$java Derive "+ - 1 2 3"
+
+Exp
++ Exp Exp
++ Exp Literal
++ Exp Int
++ Exp 3
++ - Exp Exp 3
++ - Exp Literal 3
++ - Exp Int 3
++ - Exp 2 3
++ - Literal 2 3
++ - Int 2 3
++ - 1 2 3
+
+$java Derive "+ - z y * 2 3"
+
+Exp
++ Exp Exp
++ Exp * Exp Exp
++ Exp * Exp Literal
++ Exp * Exp Int
++ Exp * Exp 3
++ Exp * Literal 3
++ Exp * Int 3
++ Exp * 2 3
++ - Exp Exp * 2 3
++ - Exp Literal * 2 3
++ - Exp Var * 2 3
++ - Exp y * 2 3
++ - Literal y * 2 3
++ - Var y * 2 3
++ - z y * 2 3
+
+$java Derive "+ w - - - a b 1 5"
+
+Exp
++ Exp Exp
++ Exp - Exp Exp
++ Exp - Exp Literal
++ Exp - Exp Int
++ Exp - Exp 5
++ Exp - - Exp Exp 5
++ Exp - - Exp Literal 5
++ Exp - - Exp Int 5
++ Exp - - Exp 1 5
++ Exp - - - Exp Exp 1 5
++ Exp - - - Exp Literal 1 5
++ Exp - - - Exp Var 1 5
++ Exp - - - Exp b 1 5
++ Exp - - - Literal b 1 5
++ Exp - - - Var b 1 5
++ Exp - - - a b 1 5
++ Literal - - - a b 1 5
++ Var - - - a b 1 5
++ w - - - a b 1 5
+
+$java Derive "+ * / x 2 d - - a 1 8"
+
+Exp
++ Exp Exp
++ Exp - Exp Exp
++ Exp - Exp Literal
++ Exp - Exp Int
++ Exp - Exp 8
++ Exp - - Exp Exp 8
++ Exp - - Exp Literal 8
++ Exp - - Exp Int 8
++ Exp - - Exp 1 8
++ Exp - - Literal 1 8
++ Exp - - Var 1 8
++ Exp - - a 1 8
++ * Exp Exp - - a 1 8
++ * Exp Literal - - a 1 8
++ * Exp Var - - a 1 8
++ * Exp d - - a 1 8
++ * / Exp Exp d - - a 1 8
++ * / Exp Literal d - - a 1 8
++ * / Exp Int d - - a 1 8
++ * / Exp 2 d - - a 1 8
++ * / Literal 2 d - - a 1 8
++ * / Var 2 d - - a 1 8
++ * / x 2 d - - a 1 8
