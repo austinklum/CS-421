@@ -2,6 +2,7 @@
 /**
  * * Derive
  * @author Austin Klum
+ * 2019/02/17
  * Derives the following BNF grammar for postfix arthmetic.
  *  Exp     → + Exp Exp | - Exp Exp | * Exp Exp | / Exp Exp | Literal
  *	Literal → Var | Int
@@ -16,8 +17,8 @@ public class Derive {
 	String[] tokens;
 	
 	public static void main(String[] args) {
-		Derive derivation = new Derive("+ - 1 2 3");
-		derivation.DoDerivation();
+		Derive derivation = new Derive(args[0]);
+		derivation.doDerivation();
 		System.out.println(derivation);
 	}
 	public Derive(String args) {
@@ -26,57 +27,72 @@ public class Derive {
 		 realTokensLength = tokens.length;
 	}
 	
-	public void DoDerivation() {
+	/**
+	 * Does the work of the program.
+	 *  Loops through the tokens and performs contractions and transitions
+	 *  whiling keeping track of a history of events.
+	 *  @warning Modifies realTokensLength and history
+	 */
+	public void doDerivation() {
 		int numNeighborExp = 0;
+		int lastContract = 0;
 		for(int i = 0; i < realTokensLength; i++) {
 			char tok = tokens[i].charAt(0);
-			if(!IsOp(tok)) {
-				ToExp(tok,i);
+			
+			if(!isOp(tok)) {
+				toExp(tok,i);
 				numNeighborExp++;
+				//If there are two consecutive Exp we can contract the Op Exp Exp -> Exp
 				if(numNeighborExp >= 2) {
-					i = ContractOpExpExp(i);
-					numNeighborExp = 1;
+					i = ContractOpExpExp(i); // Contracts the array and sets i -= 2
+					lastContract = i;
+					numNeighborExp = 1; // We contracted down to a single Exp, thus we have 1 consecutive Exp
 				}
-			} else {
+			} else { // If we saw an operator that means there are 0 consecutive Exp tokens
 				numNeighborExp = 0;
 			}
 		}
+		//Sometimes the last contraction will contract to nothing and it should display Exp
+		if (lastContract == 2) {
+			history.insert(0,"Exp\n");
+		}
 	}
 
+	/**
+	 * Contracts the derivation from Op Exp Exp -> Exp. 
+	 * Subtracts 2 from realTokensLength .
+	 * Adds the contraction to history of derivations.
+	 * @warning Modifies realTokensLength, tokens, and history
+	 * @param index The last instance of Exp that needs to be contracted. index - 2 is where we should start contracting on.
+	 * @return index - 2
+	 */
 	public int ContractOpExpExp (int index) {
-		int i = 0;
 		//pull end of array towards front to simulate contraction
-		for(i = index-2; i < realTokensLength; i++) {
-			//tokensToString();
-			if(i < realTokensLength -1) {
-			tokens[i] = tokens[i+1];
-			} else {
-				tokens[i] = tokens[i];
-			}
+		for(int i = index-2; i < realTokensLength - 2; i++) {
+			tokens[i] = tokens[i+2];
 		}
-		//tokensToString();
-		//tokens[i] = tokens
+
 		//Update index and array search length
 		realTokensLength -= 2;
-		history.insert(0, DeriveLineOtherTokAtIndex(tokens[index-2],index-2));
-		//tokensToString();
+		history.insert(0, deriveLineOtherTokenAtIndex(tokens[index-2],index-2));
 		return index - 2;
 	}
 	
 	/**
 	 * Takes the int or var and adds to the history the progress of the derivation.
 	 * Changes the token at the index to "Exp"
+	 * @warning Modifies tokens and history
 	 * @param tok token to convert into Exp
 	 * @param index where to replace token
 	 */
-	public void ToExp(char tok, int index) {
+	public void toExp(char tok, int index) {
 		String type = "Var";
 		if(tok >= 48 && tok <= 57) {
 			type = "Int";
 		}
-		history.insert(0,DeriveLineOtherTokAtIndex(type,index));
-		history.insert(0,DeriveLineOtherTokAtIndex("Literal",index));
-		history.insert(0,DeriveLineOtherTokAtIndex("Exp",index));
+		history.insert(0,deriveLineOtherTokenAtIndex(type,index));
+		history.insert(0,deriveLineOtherTokenAtIndex("Literal",index));
+		history.insert(0,deriveLineOtherTokenAtIndex("Exp",index));
 		tokens[index] = "Exp";
 	}
 	/**
@@ -85,7 +101,7 @@ public class Derive {
 	 * @param index Index in line that will use the other token
 	 * @return
 	 */
-	public String DeriveLineOtherTokAtIndex(String otherTok, int index) {
+	public String deriveLineOtherTokenAtIndex(String otherTok, int index) {
 		StringBuilder line = new StringBuilder();
 		for (int i = 0; i < realTokensLength; i++) {
 			if (i == index) {
@@ -111,15 +127,8 @@ public class Derive {
 		return history.toString();
 	}
 	
-	public boolean IsOp(char tok) {
+	public boolean isOp(char tok) {
 		return tok == '+' || tok == '-' || tok == '*' || tok =='/';
 	}
 	
-	public void tokensToString() {
-		System.out.println("RTL = " + realTokensLength);
-		for(String tok : tokens) {
-			System.out.print(tok + " ");
-		}
-		System.out.println();
-	}
 }
