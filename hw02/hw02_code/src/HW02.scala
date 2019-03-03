@@ -163,18 +163,16 @@ object HW02 {
       */
     def geqList(x : Int, list: List[Int]) = {
       var isGreater = true
-      for(item <- list) {
-        if(x < item) {
+      for(item <- list if x < item) {
           isGreater = false;
-        }
       }
       isGreater
     }
-      println("\n***************\nTesting the iterative geq-List function\n***************\n")
+/*      println("\n***************\nTesting the iterative geq-List function\n***************\n")
       println(geqList(4, ls0)) //> true
       println(geqList(4, ls1)) //> true
       println(geqList(4, ls2)) //> false
-      println(geqList(4, ls3)) //> false
+      println(geqList(4, ls3)) //> false*/
 
 
     /**
@@ -183,27 +181,28 @@ object HW02 {
       * This will ALWAYS return true on an empty list.
       * (This should be written recursively, without var and loop.)
       */
+    def geqListRec(x: Int, list: List[Int]) : Boolean = list match{
+      case head::tail => if (x < head) false else geqListRec(x,tail)
+      case Nil => true
+    }
 
-    /*
-      println("\n***************\nTesting the recursive geq-List function\n***************\n")
+   /*   println("\n***************\nTesting the recursive geq-List function\n***************\n")
       println(geqListRec(4, ls0)) //> true
       println(geqListRec(4, ls1)) //> true
       println(geqListRec(4, ls2)) //> false
       println(geqListRec(4, ls3)) //> false
-  */
-
+*/
 
     /**
       * Simple example of functional input. Un-comment to see how it works.
       */
 
 
-    /*
       def apply(fun: Int => Int, x: Int) = if (x < 0) 0 else fun(x)
 
       def plus1(x: Int) = x + 1
 
-      println("\n***************\nExample of function application\n***************\n")
+     /* println("\n***************\nExample of function application\n***************\n")
       println(plus1(-1)) //> 0
       println(plus1(0)) //> 1
       println(plus1(2)) //> 3*/
@@ -213,8 +212,10 @@ object HW02 {
       * 5. geqListRec modified to take in extra functional input and check
       * that the function returns true on every application to pair ( x, list-element ).
       */
-
-    /*
+    def functionListRec(x: Int, list: List[Int],fun: Int => Boolean) : Boolean = list match{
+      case head::tail => if (x < head) false else geqListRec(x,tail)
+      case Nil => true
+    }
       println("\n***************\nTesting functionListRec \n***************\n")
       def falsefun(x: Int, y: Int) = false //> falsefun: (x: Int, y: Int)Boolean
       def truefun(x: Int, y: Int) = true //> truefun: (x: Int, y: Int)Boolean
@@ -225,7 +226,6 @@ object HW02 {
       println(functionListRec(4, ls1, _ > _)) //> false
       println(functionListRec(4, ls1, _ != _)) //> false
       println(functionListRec(10, ls1, _ != _)) //> true
-  */
 
 
     /**
