@@ -70,7 +70,7 @@ object HW02 {
       }
       sum
     }
-      println("\n***************\nTesting the range-sum function\n***************\n")
+/*      println("\n***************\nTesting the range-sum function\n***************\n")
       println(rangeSum(-1, -1)) //> -1
       println(rangeSum(1, 1)) //> 1
       println(rangeSum(-1, 1)) //> 0
@@ -78,7 +78,7 @@ object HW02 {
       println(rangeSum(1, 5)) //> 15
       println(rangeSum(5, 1)) //> 15
       println(rangeSum(-1, -5)) //> -15
-      println(rangeSum(1, -5)) //> -14
+      println(rangeSum(1, -5)) //> -14*/
 
 
     /**
@@ -86,9 +86,16 @@ object HW02 {
       * * values between the two, inclusively.  If (x == y), this will be x.
       * (This should be written recursively, without var or loop.)
       */
-
-    /*
-      println("\n***************\nTesting the recursive range-sum function\n***************\n")
+    def rangeSumRec(x : Int, y : Int):Int = {
+     if (x < y ) {
+        x + rangeSumRec(x + 1,y)
+      } else if (x > y) {
+        y + rangeSumRec(x, y + 1)
+      } else {
+       x
+     }
+    }
+/*      println("\n***************\nTesting the recursive range-sum function\n***************\n")
       println(rangeSumRec(-1, -1)) //> -1
       println(rangeSumRec(1, 1)) //> 1
       println(rangeSumRec(-1, 1)) //> 0
@@ -96,8 +103,7 @@ object HW02 {
       println(rangeSumRec(1, 5)) //> 15
       println(rangeSumRec(5, 1)) //> 15
       println(rangeSumRec(-1, -5)) //> -15
-      println(rangeSumRec(1, -5)) //> -14
-  */
+      println(rangeSumRec(1, -5)) //> -14*/
 
 
     /**
@@ -105,19 +111,25 @@ object HW02 {
       * Will return 0 for empty lists.
       * (This should be written iteratively, using var and loop.)
       */
+     def product(list : List[Int]) = {
+       var total = if(list.nonEmpty) 1 else 0
+      for(item <- list) {
+        total *= item
+      }
+       total
+     }
 
-    /*
-      println("\n***************\nTesting the iterative list-product function\n***************\n")
       val ls0: List[Int] = List() //> ls0  : List[Int] = List()
       val ls1 = List(0, 1, 2, 3, 4) //> ls1  : List[Int] = List(0, 1, 2, 3, 4)
       val ls2 = List(1, 2, 3, 4, 5) //> ls2  : List[Int] = List(1, 2, 3, 4, 5)
       val ls3 = List(1, -2, 3, 4, 5) //> ls3  : List[Int] = List(1, -2, 3, 4, 5)
 
+    /*
+      println("\n***************\nTesting the iterative list-product function\n***************\n")
       println(product(ls0)) //> 0
       println(product(ls1)) //> 0
       println(product(ls2)) //> 120
-      println(product(ls3)) //> -120
-  */
+      println(product(ls3)) //> -120*/
 
 
     /**
@@ -125,15 +137,23 @@ object HW02 {
       * Will return 0 for empty lists.
       * (This should be written recursively, without var or loop.)
       */
-
-    /*
-      println("\n***************\nTesting the recursive list-product function\n***************\n")
+    def productRec(list: List[Int]): Int = {
+      def productRecHelp(list :List[Int]) : Int = list match {
+        case item::tail => item * productRecHelp(tail)
+        case Nil => 1
+      }
+      if (list == Nil){
+        0
+      } else {
+        productRecHelp(list)
+      }
+    }
+   /*   println("\n***************\nTesting the recursive list-product function\n***************\n")
       println(productRec(ls0)) //> 0
       println(productRec(ls1)) //> 0
       println(productRec(ls2)) //> 120
       println(productRec(ls3)) //> -120
-  */
-
+*/
 
     /**
       * 4.a.  "Greater-than-or-equal-to-list" function:  given input list of integers, and integer x,
@@ -141,14 +161,20 @@ object HW02 {
       * This will ALWAYS return true on an empty list.
       * (This should be written iteratively, using var and loop.)
       */
-
-    /*
+    def geqList(x : Int, list: List[Int]) = {
+      var isGreater = true
+      for(item <- list) {
+        if(x < item) {
+          isGreater = false;
+        }
+      }
+      isGreater
+    }
       println("\n***************\nTesting the iterative geq-List function\n***************\n")
       println(geqList(4, ls0)) //> true
       println(geqList(4, ls1)) //> true
       println(geqList(4, ls2)) //> false
       println(geqList(4, ls3)) //> false
-  */
 
 
     /**
