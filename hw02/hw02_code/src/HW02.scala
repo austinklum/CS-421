@@ -284,9 +284,11 @@ object HW02 {
       * If the list is empty, the empty list should be returned.
       * (Should be written using match and recursion, and basic Scala control structures.)
       */
-
-    /*
-      println("\n***************\nTesting the pairdel function \n***************\n")
+    def pairdel(pairs: List[(Any, Any)], x : Any): List[(Any,Any)] = pairs match {
+      case head::tail => if(head._1 != x && head._2 != x) head::pairdel(tail,x) else pairdel(tail,x)
+      case Nil => List()
+    }
+     /* println("\n***************\nTesting the pairdel function \n***************\n")
       val ls4 = (1 to 5).toList //> ls4  : List[Int] = List(1, 2, 3, 4, 5)
       val ls5 = ls4.reverse //> ls5  : List[Int] = List(5, 4, 3, 2, 1)
       val ls6 = ls4 zip ls5 //> ls6  : List[(Int, Int)] = List((1,5), (2,4), (3,3), (4,2), (5,1))
@@ -296,8 +298,7 @@ object HW02 {
 
       println(pairdel(ls6, 2)) //> List((1,5), (3,3), (5,1))
       println(pairdel(ls8, 'c')) //> List((a,1), (b,2), (d,4), (e,5))
-      println(pairdel(ls9, 4)) //> List((1,a), (2,b), (3,c), (5,e))
-  */
+      println(pairdel(ls9, 4)) //> List((1,a), (2,b), (3,c), (5,e))*/
 
 
     /**

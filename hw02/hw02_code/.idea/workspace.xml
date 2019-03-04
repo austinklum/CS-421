@@ -17,7 +17,7 @@
         <entry file="file://$PROJECT_DIR$/src/HW02.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
-              <caret line="269" column="7" lean-forward="true" selection-start-line="269" selection-start-column="7" selection-end-line="269" selection-end-column="7" />
+              <caret line="290" selection-start-line="290" selection-end-line="301" />
             </state>
           </provider>
         </entry>
@@ -52,8 +52,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="778" />
-    <option name="width" value="1149" />
+    <option name="x" value="736" />
+    <option name="width" value="1191" />
     <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -80,7 +80,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551667634999" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551668055638" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -121,15 +121,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1551572502545</updated>
-      <workItem from="1551572506195" duration="15836000" />
+      <workItem from="1551572506195" duration="16190000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15836000" />
+    <option name="totallyTimeSpent" value="16190000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="650" y="0" width="959" height="868" extended-state="0" />
+    <frame x="615" y="0" width="994" height="868" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Image Layers" />
@@ -137,7 +137,7 @@
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12235817" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11777302" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Messages" weight="0.32880434" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
@@ -182,7 +182,7 @@
     <entry file="file://$PROJECT_DIR$/src/HW02.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
-          <caret line="269" column="7" lean-forward="true" selection-start-line="269" selection-start-column="7" selection-end-line="269" selection-end-column="7" />
+          <caret line="290" selection-start-line="290" selection-end-line="301" />
         </state>
       </provider>
     </entry>
