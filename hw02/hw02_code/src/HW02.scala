@@ -182,17 +182,16 @@ object HW02 {
       * (This should be written recursively, without var and loop.)
       */
     def geqListRec(x: Int, list: List[Int]) : Boolean = list match{
-      case head::tail => if (x < head) false else geqListRec(x,tail)
+      case head::tail => if (x >= head) geqListRec(x,tail) else false
       case Nil => true
     }
 
-   /*   println("\n***************\nTesting the recursive geq-List function\n***************\n")
+    /*  println("\n***************\nTesting the recursive geq-List function\n***************\n")
       println(geqListRec(4, ls0)) //> true
       println(geqListRec(4, ls1)) //> true
       println(geqListRec(4, ls2)) //> false
       println(geqListRec(4, ls3)) //> false
 */
-
     /**
       * Simple example of functional input. Un-comment to see how it works.
       */
@@ -212,20 +211,20 @@ object HW02 {
       * 5. geqListRec modified to take in extra functional input and check
       * that the function returns true on every application to pair ( x, list-element ).
       */
-//    def functionListRec(x: Int, list: List[Int],fun: Int => Boolean) : Boolean = list match{
-//      case head::tail => if (x < head) false else geqListRec(x,tail)
-//      case Nil => true
-//    }
-//      println("\n***************\nTesting functionListRec \n***************\n")
-//      def falsefun(x: Int, y: Int) = false //> falsefun: (x: Int, y: Int)Boolean
-//      def truefun(x: Int, y: Int) = true //> truefun: (x: Int, y: Int)Boolean
-//
-//      println(functionListRec(4, ls0, truefun)) //> true
-//      println(functionListRec(4, ls0, falsefun)) //> true
-//      println(functionListRec(4, ls1, _ >= _)) //> true
-//      println(functionListRec(4, ls1, _ > _)) //> false
-//      println(functionListRec(4, ls1, _ != _)) //> false
-//      println(functionListRec(10, ls1, _ != _)) //> true
+    def functionListRec(x: Int, list: List[Int],fun: (Int, Int) => Boolean) : Boolean = list match{
+      case head::tail => if (x >= head && fun(x,head)) functionListRec(x,tail,fun) else false
+      case Nil => true
+    }
+/*      println("\n***************\nTesting functionListRec \n***************\n")
+      def falsefun(x: Int, y: Int) = false //> falsefun: (x: Int, y: Int)Boolean
+      def truefun(x: Int, y: Int) = true //> truefun: (x: Int, y: Int)Boolean
+
+      println(functionListRec(4, ls0, truefun)) //> true
+      println(functionListRec(4, ls0, falsefun)) //> true
+      println(functionListRec(4, ls1, _ >= _)) //> true
+      println(functionListRec(4, ls1, _ > _)) //> false
+      println(functionListRec(4, ls1, _ != _)) //> false
+      println(functionListRec(10, ls1, _ != _)) //> true*/
 
 
     /**
@@ -242,7 +241,7 @@ object HW02 {
         countInHelp(list,0)
       }
 
-      println("\n***************\nTesting the contains function \n***************\n")
+/*      println("\n***************\nTesting the contains function \n***************\n")
       val lsa = List(1.0, 2.0, 3.0, 4.0)
       val lsb = List(1, 2, 3, 4)
       val lsc = List(1, 0, 1, 0, 0, 0, 1, 1)
@@ -255,7 +254,7 @@ object HW02 {
       println(countIn(lsb, "1")) //> 0
       println(countIn(lsc, 1)) //> 4
       println(countIn(lsc, 0)) //> 4
-      println(countIn(lsc, List(0))) //> 0
+      println(countIn(lsc, List(0))) //> 0*/
 
 
 
@@ -265,17 +264,17 @@ object HW02 {
       * If the list is empty, the empty list should be returned.
       * (Should be written using match and recursion, and basic Scala control structures.)
       */
-
-    /*
-      println("\n***************\nTesting the pairsum function \n***************\n")
-      val lsx = (1 to 5).toList //> lsx  : List[Int] = List(1, 2, 3, 4, 5)
-      val lsy = (-5 to -1).toList.reverse //> lsy  : List[Int] = List(-1, -2, -3, -4, -5)
-      val lsz = lsx zip lsx //> lsz  : List[(Int, Int)] = List((1,1), (2,2), (3,3), (4,4), (5,5))
-      val lsw = lsx zip lsy //> lsw  : List[(Int, Int)] = List((1,-1), (2,-2), (3,-3), (4,-4), (5,-5))
-
-      println(pairsum(lsz)) //> List(2, 4, 6, 8, 10)
-      println(pairsum(lsw)) //> List(0, 0, 0, 0, 0)
-  */
+//      def pairsum(pairs: List[(Int, Int)]): List[Int] = {
+//
+//      }
+//      println("\n***************\nTesting the pairsum function \n***************\n")
+//      val lsx = (1 to 5).toList //> lsx  : List[Int] = List(1, 2, 3, 4, 5)
+//      val lsy = (-5 to -1).toList.reverse //> lsy  : List[Int] = List(-1, -2, -3, -4, -5)
+//      val lsz = lsx zip lsx //> lsz  : List[(Int, Int)] = List((1,1), (2,2), (3,3), (4,4), (5,5))
+//      val lsw = lsx zip lsy //> lsw  : List[(Int, Int)] = List((1,-1), (2,-2), (3,-3), (4,-4), (5,-5))
+//
+//      println(pairsum(lsz)) //> List(2, 4, 6, 8, 10)
+//      println(pairsum(lsw)) //> List(0, 0, 0, 0, 0)
 
 
     /**
