@@ -288,7 +288,7 @@ object HW02 {
       case head::tail => if(head._1 != x && head._2 != x) head::pairdel(tail,x) else pairdel(tail,x)
       case Nil => List()
     }
-     /* println("\n***************\nTesting the pairdel function \n***************\n")
+     // println("\n***************\nTesting the pairdel function \n***************\n")
       val ls4 = (1 to 5).toList //> ls4  : List[Int] = List(1, 2, 3, 4, 5)
       val ls5 = ls4.reverse //> ls5  : List[Int] = List(5, 4, 3, 2, 1)
       val ls6 = ls4 zip ls5 //> ls6  : List[(Int, Int)] = List((1,5), (2,4), (3,3), (4,2), (5,1))
@@ -296,9 +296,9 @@ object HW02 {
       val ls8 = ls7 zip ls4 //> ls8  : List[(Char, Int)] = List((a,1), (b,2), (c,3), (d,4), (e,5))
       val ls9 = ls4 zip ls7 //> ls9  : List[(Int, Char)] = List((1,a), (2,b), (3,c), (4,d), (5,e))
 
-      println(pairdel(ls6, 2)) //> List((1,5), (3,3), (5,1))
-      println(pairdel(ls8, 'c')) //> List((a,1), (b,2), (d,4), (e,5))
-      println(pairdel(ls9, 4)) //> List((1,a), (2,b), (3,c), (5,e))*/
+//      println(pairdel(ls6, 2)) //> List((1,5), (3,3), (5,1))
+//      println(pairdel(ls8, 'c')) //> List((a,1), (b,2), (d,4), (e,5))
+//      println(pairdel(ls9, 4)) //> List((1,a), (2,b), (3,c), (5,e))*/
 
 
     /**
@@ -310,9 +310,14 @@ object HW02 {
       * (Should be written using match and recursion, and basic Scala control structures.
       * You must not use library methods from the List class, or any element indexing.)
       */
-
-    /*
-      println("\n***************\nTesting the sublist function \n***************\n")
+    def sublist(list: List[Any], start : Int, end : Int): List[Any] = {
+      def sublistHelp(listHelp: List[Any],index : Int) : List[Any] = listHelp match {
+        case head::tail => if(start <= index && index < end) head::sublistHelp(tail,index+1) else sublistHelp(tail,index+1)
+        case Nil => List()
+      }
+      sublistHelp(list,0)
+    }
+  /*    println("\n***************\nTesting the sublist function \n***************\n")
       println(sublist(ls0, 2, 4)) //> List()
       println(sublist(ls1, 2, 1)) //> List()
       println(sublist(ls1, 2, 2)) //> List()
@@ -322,8 +327,7 @@ object HW02 {
       println(sublist(ls1, 2, 10)) //> List(2, 3, 4)
       println(sublist(ls9, 1, 3)) //> List((2,b), (3,c))
       println(sublist(ls9, 3, 100)) //> List((4,d), (5,e))
-  */
-
+*/
     /**
       * 10.a.  Function that takes in two lists of integers, and a function on integer pairs.
       * It returns the list of integers that results from applying the function to
