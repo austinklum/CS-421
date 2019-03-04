@@ -23,14 +23,14 @@ object HW02 {
     }
 
 
-   /* println("\n***************\nTesting the iterative power function\n***************\n")
+    println("\n***************\nTesting the iterative power function\n***************\n")
     println(power(1, 3)) //> 1
     println(power(1, 4)) //> 1
     println(power(-1, 3)) //> -1
     println(power(-1, 4)) //> 1
     println(power(2, -1)) //> 1
     println(power(2, 0)) //> 1
-    println(power(2, 3)) //> 8*/
+    println(power(2, 3)) //> 8
 
 
     /**
@@ -44,7 +44,6 @@ object HW02 {
           x * powerRec(x, y - 1)
         }
       }
-/*
       println("\n***************\nTesting the recursive power function\n***************\n")
       println(powerRec(1, 3)) //> 1
       println(powerRec(1, 4)) //> 1
@@ -52,7 +51,7 @@ object HW02 {
       println(powerRec(-1, 4)) //> 1
       println(powerRec(2, -1)) //> 1
       println(powerRec(2, 0)) //> 1
-      println(powerRec(2, 3)) //> 8*/
+      println(powerRec(2, 3)) //> 8
 
 
     /**
@@ -70,7 +69,7 @@ object HW02 {
       }
       sum
     }
-/*      println("\n***************\nTesting the range-sum function\n***************\n")
+      println("\n***************\nTesting the range-sum function\n***************\n")
       println(rangeSum(-1, -1)) //> -1
       println(rangeSum(1, 1)) //> 1
       println(rangeSum(-1, 1)) //> 0
@@ -78,7 +77,7 @@ object HW02 {
       println(rangeSum(1, 5)) //> 15
       println(rangeSum(5, 1)) //> 15
       println(rangeSum(-1, -5)) //> -15
-      println(rangeSum(1, -5)) //> -14*/
+      println(rangeSum(1, -5)) //> -14
 
 
     /**
@@ -95,7 +94,7 @@ object HW02 {
        x
      }
     }
-/*      println("\n***************\nTesting the recursive range-sum function\n***************\n")
+      println("\n***************\nTesting the recursive range-sum function\n***************\n")
       println(rangeSumRec(-1, -1)) //> -1
       println(rangeSumRec(1, 1)) //> 1
       println(rangeSumRec(-1, 1)) //> 0
@@ -103,7 +102,7 @@ object HW02 {
       println(rangeSumRec(1, 5)) //> 15
       println(rangeSumRec(5, 1)) //> 15
       println(rangeSumRec(-1, -5)) //> -15
-      println(rangeSumRec(1, -5)) //> -14*/
+      println(rangeSumRec(1, -5)) //> -14
 
 
     /**
@@ -124,12 +123,11 @@ object HW02 {
       val ls2 = List(1, 2, 3, 4, 5) //> ls2  : List[Int] = List(1, 2, 3, 4, 5)
       val ls3 = List(1, -2, 3, 4, 5) //> ls3  : List[Int] = List(1, -2, 3, 4, 5)
 
-    /*
       println("\n***************\nTesting the iterative list-product function\n***************\n")
       println(product(ls0)) //> 0
       println(product(ls1)) //> 0
       println(product(ls2)) //> 120
-      println(product(ls3)) //> -120*/
+      println(product(ls3)) //> -120
 
 
     /**
@@ -148,12 +146,11 @@ object HW02 {
         productRecHelp(list)
       }
     }
-   /*   println("\n***************\nTesting the recursive list-product function\n***************\n")
+      println("\n***************\nTesting the recursive list-product function\n***************\n")
       println(productRec(ls0)) //> 0
       println(productRec(ls1)) //> 0
       println(productRec(ls2)) //> 120
       println(productRec(ls3)) //> -120
-*/
 
     /**
       * 4.a.  "Greater-than-or-equal-to-list" function:  given input list of integers, and integer x,
@@ -168,11 +165,11 @@ object HW02 {
       }
       isGreater
     }
-/*      println("\n***************\nTesting the iterative geq-List function\n***************\n")
+      println("\n***************\nTesting the iterative geq-List function\n***************\n")
       println(geqList(4, ls0)) //> true
       println(geqList(4, ls1)) //> true
       println(geqList(4, ls2)) //> false
-      println(geqList(4, ls3)) //> false*/
+      println(geqList(4, ls3)) //> false
 
 
     /**
@@ -186,12 +183,11 @@ object HW02 {
       case Nil => true
     }
 
-    /*  println("\n***************\nTesting the recursive geq-List function\n***************\n")
+      println("\n***************\nTesting the recursive geq-List function\n***************\n")
       println(geqListRec(4, ls0)) //> true
       println(geqListRec(4, ls1)) //> true
       println(geqListRec(4, ls2)) //> false
       println(geqListRec(4, ls3)) //> false
-*/
     /**
       * Simple example of functional input. Un-comment to see how it works.
       */
@@ -215,7 +211,7 @@ object HW02 {
       case head::tail => if (x >= head && fun(x,head)) functionListRec(x,tail,fun) else false
       case Nil => true
     }
-/*      println("\n***************\nTesting functionListRec \n***************\n")
+      println("\n***************\nTesting functionListRec \n***************\n")
       def falsefun(x: Int, y: Int) = false //> falsefun: (x: Int, y: Int)Boolean
       def truefun(x: Int, y: Int) = true //> truefun: (x: Int, y: Int)Boolean
 
@@ -224,7 +220,7 @@ object HW02 {
       println(functionListRec(4, ls1, _ >= _)) //> true
       println(functionListRec(4, ls1, _ > _)) //> false
       println(functionListRec(4, ls1, _ != _)) //> false
-      println(functionListRec(10, ls1, _ != _)) //> true*/
+      println(functionListRec(10, ls1, _ != _)) //> true
 
 
     /**
@@ -241,7 +237,7 @@ object HW02 {
         countInHelp(list,0)
       }
 
-/*      println("\n***************\nTesting the contains function \n***************\n")
+      println("\n***************\nTesting the contains function \n***************\n")
       val lsa = List(1.0, 2.0, 3.0, 4.0)
       val lsb = List(1, 2, 3, 4)
       val lsc = List(1, 0, 1, 0, 0, 0, 1, 1)
@@ -254,7 +250,7 @@ object HW02 {
       println(countIn(lsb, "1")) //> 0
       println(countIn(lsc, 1)) //> 4
       println(countIn(lsc, 0)) //> 4
-      println(countIn(lsc, List(0))) //> 0*/
+      println(countIn(lsc, List(0))) //> 0
 
 
 
@@ -268,14 +264,14 @@ object HW02 {
         case head::tail => head._1 + head._2 :: pairsum(tail)
         case Nil => List()
       }
-    /*  println("\n***************\nTesting the pairsum function \n***************\n")
+      println("\n***************\nTesting the pairsum function \n***************\n")
       val lsx = (1 to 5).toList //> lsx  : List[Int] = List(1, 2, 3, 4, 5)
       val lsy = (-5 to -1).toList.reverse //> lsy  : List[Int] = List(-1, -2, -3, -4, -5)
       val lsz = lsx zip lsx //> lsz  : List[(Int, Int)] = List((1,1), (2,2), (3,3), (4,4), (5,5))
       val lsw = lsx zip lsy //> lsw  : List[(Int, Int)] = List((1,-1), (2,-2), (3,-3), (4,-4), (5,-5))
 
       println(pairsum(lsz)) //> List(2, 4, 6, 8, 10)
-      println(pairsum(lsw)) //> List(0, 0, 0, 0, 0)*/
+      println(pairsum(lsw)) //> List(0, 0, 0, 0, 0)
 
 
     /**
@@ -288,7 +284,7 @@ object HW02 {
       case head::tail => if(head._1 != x && head._2 != x) head::pairdel(tail,x) else pairdel(tail,x)
       case Nil => List()
     }
-     // println("\n***************\nTesting the pairdel function \n***************\n")
+      println("\n***************\nTesting the pairdel function \n***************\n")
       val ls4 = (1 to 5).toList //> ls4  : List[Int] = List(1, 2, 3, 4, 5)
       val ls5 = ls4.reverse //> ls5  : List[Int] = List(5, 4, 3, 2, 1)
       val ls6 = ls4 zip ls5 //> ls6  : List[(Int, Int)] = List((1,5), (2,4), (3,3), (4,2), (5,1))
@@ -296,9 +292,9 @@ object HW02 {
       val ls8 = ls7 zip ls4 //> ls8  : List[(Char, Int)] = List((a,1), (b,2), (c,3), (d,4), (e,5))
       val ls9 = ls4 zip ls7 //> ls9  : List[(Int, Char)] = List((1,a), (2,b), (3,c), (4,d), (5,e))
 
-//      println(pairdel(ls6, 2)) //> List((1,5), (3,3), (5,1))
-//      println(pairdel(ls8, 'c')) //> List((a,1), (b,2), (d,4), (e,5))
-//      println(pairdel(ls9, 4)) //> List((1,a), (2,b), (3,c), (5,e))*/
+      println(pairdel(ls6, 2)) //> List((1,5), (3,3), (5,1))
+      println(pairdel(ls8, 'c')) //> List((a,1), (b,2), (d,4), (e,5))
+      println(pairdel(ls9, 4)) //> List((1,a), (2,b), (3,c), (5,e))*/
 
 
     /**
@@ -317,7 +313,7 @@ object HW02 {
       }
       sublistHelp(list,0)
     }
-  /*    println("\n***************\nTesting the sublist function \n***************\n")
+      println("\n***************\nTesting the sublist function \n***************\n")
       println(sublist(ls0, 2, 4)) //> List()
       println(sublist(ls1, 2, 1)) //> List()
       println(sublist(ls1, 2, 2)) //> List()
@@ -327,7 +323,6 @@ object HW02 {
       println(sublist(ls1, 2, 10)) //> List(2, 3, 4)
       println(sublist(ls9, 1, 3)) //> List((2,b), (3,c))
       println(sublist(ls9, 3, 100)) //> List((4,d), (5,e))
-*/
     /**
       * 10.a.  Function that takes in two lists of integers, and a function on integer pairs.
       * It returns the list of integers that results from applying the function to
@@ -350,12 +345,12 @@ object HW02 {
       val lscc = (1 to 10).toList //> lscc  : List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
       val lsdd = (-10 to -1).toList.reverse //> lsdd  : List[Int] = List(-1, -2, -3, -4, -5, -6, -7, -8, -9, -10)
 
-//      println(applyIntLists(lsaa, lsbb, _ + _)) //> List()
-//      println(applyIntLists(lsbb, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
-//      println(applyIntLists(lsbb, lscc, _ + _)) //> List(2, 4, 6, 8, 10)
-//      println(applyIntLists(lscc, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
-//      println(applyIntLists(lscc, lsdd, _ + _)) //> List(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-//      println(applyIntLists(lscc, lsdd, _ * _)) //> List(-1, -4, -9, -16, -25, -36, -49, -64, -81, -100)
+      println(applyIntLists(lsaa, lsbb, _ + _)) //> List()
+      println(applyIntLists(lsbb, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
+      println(applyIntLists(lsbb, lscc, _ + _)) //> List(2, 4, 6, 8, 10)
+      println(applyIntLists(lscc, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
+      println(applyIntLists(lscc, lsdd, _ + _)) //> List(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+      println(applyIntLists(lscc, lsdd, _ * _)) //> List(-1, -4, -9, -16, -25, -36, -49, -64, -81, -100)
 
 
 
@@ -386,11 +381,11 @@ object HW02 {
       }
       applyListsHelper(list1,list2)
     }
-//     println("\n***************\nTesting the applyLists function \n***************\n")
+      println("\n***************\nTesting the applyLists function \n***************\n")
       val lssb = lsbb.map((x: Int) => x.toString) // List("1", "2", "3", "4", "5")
       val lssc = lscc.map((x: Int) => x.toString) // List("1", "2", "3", "4", "5", ..., "10")
 
-   /*   println(applyLists[Int](lsaa, lsbb, _ + _)) //> List()
+      println(applyLists[Int](lsaa, lsbb, _ + _)) //> List()
       println(applyLists[Int](lsbb, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
       println(applyLists[Int](lsbb, lscc, _ + _)) //> List(2, 4, 6, 8, 10)
       println(applyLists[Int](lscc, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
@@ -399,7 +394,7 @@ object HW02 {
       println(applyLists[String](lssb, lssb, _ + _)) //> List(11, 22, 33, 44, 55)
       println(applyLists[String](lssc, lssc, _ + _)) //> List(11, 22, 33, 44, 55, 66, 77, 88, 99, 1010)
       println(applyLists[String](lssb, lssc, _ + _)) //> List(11, 22, 33, 44, 55)
-      println(applyLists[String](lssc, lssb, _ + _)) //> List(11, 22, 33, 44, 55)*/
+      println(applyLists[String](lssc, lssb, _ + _)) //> List(11, 22, 33, 44, 55)
 
 
     /**
