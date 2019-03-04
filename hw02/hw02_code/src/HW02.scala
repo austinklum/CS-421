@@ -335,23 +335,13 @@ object HW02 {
       * If the lists are of unequal length, it should return a list for the first n pairs,
       * where n is the length of the shortest of the two lists.
       */
-    def applyIntLists(list1: List[Int], list2: List[Int], func: (Any, Any) => Any): List[Int] = {
-      var longerList = List()
-      var shorterList = List()
-      var endList = List()
-      if(list1.length > list2.length){
-        longerList ::: list1
-        shorterList ::: list2
-      } else{
-        longerList ::: list2
-        shorterList ::: list1
+    def applyIntLists(list1: List[Int], list2: List[Int], func: (Int, Int) => Int): List[Int] = {
+      def applyIntListsHelper(listHelp1: List[Int], listHelp2: List[Int]): List[Int] = (listHelp1,listHelp2) match {
+        case (list1Head::list1Tail, list2Head::list2Tail) => func(list1Head,list2Head)::applyIntListsHelper(list1Tail,list2Tail)
+        case (Nil,_) => List()
+        case (_,Nil) => List()
       }
-      for(outerItem <- shorterList) {
-        for(innerItem <- longerList) {
-          
-        }
-      }
-      List()
+      applyIntListsHelper(list1,list2)
     }
 
       println("\n***************\nTesting the applyIntLists function \n***************\n")
@@ -360,12 +350,12 @@ object HW02 {
       val lscc = (1 to 10).toList //> lscc  : List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
       val lsdd = (-10 to -1).toList.reverse //> lsdd  : List[Int] = List(-1, -2, -3, -4, -5, -6, -7, -8, -9, -10)
 
-      println(applyIntLists(lsaa, lsbb, _ + _)) //> List()
-      println(applyIntLists(lsbb, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
-      println(applyIntLists(lsbb, lscc, _ + _)) //> List(2, 4, 6, 8, 10)
-      println(applyIntLists(lscc, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
-      println(applyIntLists(lscc, lsdd, _ + _)) //> List(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-      println(applyIntLists(lscc, lsdd, _ * _)) //> List(-1, -4, -9, -16, -25, -36, -49, -64, -81, -100)
+//      println(applyIntLists(lsaa, lsbb, _ + _)) //> List()
+//      println(applyIntLists(lsbb, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
+//      println(applyIntLists(lsbb, lscc, _ + _)) //> List(2, 4, 6, 8, 10)
+//      println(applyIntLists(lscc, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
+//      println(applyIntLists(lscc, lsdd, _ + _)) //> List(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+//      println(applyIntLists(lscc, lsdd, _ * _)) //> List(-1, -4, -9, -16, -25, -36, -49, -64, -81, -100)
 
 
 
