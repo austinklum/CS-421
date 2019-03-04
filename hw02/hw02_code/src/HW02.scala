@@ -378,9 +378,15 @@ object HW02 {
       prln[Double](3.5) //> 3.5
       prln[String]("3.75") //> 3.75
   */
-
-    /*
-      println("\n***************\nTesting the applyLists function \n***************\n")
+    def applyLists[T](list1: List[T], list2: List[T], func: (T, T) => T): List[T] = {
+      def applyListsHelper(listHelp1: List[T], listHelp2: List[T]): List[T] = (listHelp1,listHelp2) match {
+        case (list1Head::list1Tail, list2Head::list2Tail) => func(list1Head,list2Head)::applyListsHelper(list1Tail,list2Tail)
+        case (Nil,_) => List()
+        case (_,Nil) => List()
+      }
+      applyListsHelper(list1,list2)
+    }
+/*      println("\n***************\nTesting the applyLists function \n***************\n")
       val lssb = lsbb.map((x: Int) => x.toString) // List("1", "2", "3", "4", "5")
       val lssc = lscc.map((x: Int) => x.toString) // List("1", "2", "3", "4", "5", ..., "10")
 
@@ -393,8 +399,7 @@ object HW02 {
       println(applyLists[String](lssb, lssb, _ + _)) //> List(11, 22, 33, 44, 55)
       println(applyLists[String](lssc, lssc, _ + _)) //> List(11, 22, 33, 44, 55, 66, 77, 88, 99, 1010)
       println(applyLists[String](lssb, lssc, _ + _)) //> List(11, 22, 33, 44, 55)
-      println(applyLists[String](lssc, lssb, _ + _)) //> List(11, 22, 33, 44, 55)
-  */
+      println(applyLists[String](lssc, lssb, _ + _)) //> List(11, 22, 33, 44, 55)*/
 
 
     /**
