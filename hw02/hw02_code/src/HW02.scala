@@ -264,17 +264,18 @@ object HW02 {
       * If the list is empty, the empty list should be returned.
       * (Should be written using match and recursion, and basic Scala control structures.)
       */
-//      def pairsum(pairs: List[(Int, Int)]): List[Int] = {
-//
-//      }
-//      println("\n***************\nTesting the pairsum function \n***************\n")
-//      val lsx = (1 to 5).toList //> lsx  : List[Int] = List(1, 2, 3, 4, 5)
-//      val lsy = (-5 to -1).toList.reverse //> lsy  : List[Int] = List(-1, -2, -3, -4, -5)
-//      val lsz = lsx zip lsx //> lsz  : List[(Int, Int)] = List((1,1), (2,2), (3,3), (4,4), (5,5))
-//      val lsw = lsx zip lsy //> lsw  : List[(Int, Int)] = List((1,-1), (2,-2), (3,-3), (4,-4), (5,-5))
-//
-//      println(pairsum(lsz)) //> List(2, 4, 6, 8, 10)
-//      println(pairsum(lsw)) //> List(0, 0, 0, 0, 0)
+      def pairsum(pairs: List[(Int, Int)]): List[Int] = pairs match {
+        case head::tail => head._1 + head._2 :: pairsum(tail)
+        case Nil => List()
+      }
+    /*  println("\n***************\nTesting the pairsum function \n***************\n")
+      val lsx = (1 to 5).toList //> lsx  : List[Int] = List(1, 2, 3, 4, 5)
+      val lsy = (-5 to -1).toList.reverse //> lsy  : List[Int] = List(-1, -2, -3, -4, -5)
+      val lsz = lsx zip lsx //> lsz  : List[(Int, Int)] = List((1,1), (2,2), (3,3), (4,4), (5,5))
+      val lsw = lsx zip lsy //> lsw  : List[(Int, Int)] = List((1,-1), (2,-2), (3,-3), (4,-4), (5,-5))
+
+      println(pairsum(lsz)) //> List(2, 4, 6, 8, 10)
+      println(pairsum(lsw)) //> List(0, 0, 0, 0, 0)*/
 
 
     /**
