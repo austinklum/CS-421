@@ -386,11 +386,11 @@ object HW02 {
       }
       applyListsHelper(list1,list2)
     }
-/*      println("\n***************\nTesting the applyLists function \n***************\n")
+//     println("\n***************\nTesting the applyLists function \n***************\n")
       val lssb = lsbb.map((x: Int) => x.toString) // List("1", "2", "3", "4", "5")
       val lssc = lscc.map((x: Int) => x.toString) // List("1", "2", "3", "4", "5", ..., "10")
 
-      println(applyLists[Int](lsaa, lsbb, _ + _)) //> List()
+   /*   println(applyLists[Int](lsaa, lsbb, _ + _)) //> List()
       println(applyLists[Int](lsbb, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
       println(applyLists[Int](lsbb, lscc, _ + _)) //> List(2, 4, 6, 8, 10)
       println(applyLists[Int](lscc, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
@@ -422,8 +422,14 @@ object HW02 {
       prln2[Int, Double](3, 4.5) //> x: 3, y: 4.5
       prln2[Double, String](3, "4.75") //> x: 3.0, y: 4.75
   */
-
-    /*
+    def applyLists2[T,U,V](list1: List[T], list2: List[U], func: (T, U) => V): List[V] = {
+      def applyLists2Helper(listHelp1: List[T], listHelp2: List[U]): List[V] = (listHelp1,listHelp2) match {
+        case (list1Head::list1Tail, list2Head::list2Tail) => func(list1Head,list2Head)::applyLists2Helper(list1Tail,list2Tail)
+        case (Nil,_) => List()
+        case (_,Nil) => List()
+      }
+      applyLists2Helper(list1,list2)
+    }
       println("\n***************\nTesting the applyLists function \n***************\n")
       val ls00: List[Int] = List() //> ls00  : List[Int] = List()
       val ls11 = (1 to 5).toList //> ls11  : List[Int] = List(1, 2, 3, 4, 5)
@@ -437,7 +443,5 @@ object HW02 {
       println(applyLists2[Int, Double, Double](ls22, ls33, _ * _)) //> List(1.0, 4.0, 9.0, 16.0, 25.0)
       println(applyLists2[Int, String, String](ls11, lssb, _ + _)) //> List(11, 22, 33, 44, 55)
       println(applyLists2[String, Int, String](lssc, ls11, _ + _)) //> List(11, 22, 33, 44, 55)
-    }
-  */
   }
 }
