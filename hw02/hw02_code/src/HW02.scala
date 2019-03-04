@@ -212,20 +212,20 @@ object HW02 {
       * 5. geqListRec modified to take in extra functional input and check
       * that the function returns true on every application to pair ( x, list-element ).
       */
-    def functionListRec(x: Int, list: List[Int],fun: Int => Boolean) : Boolean = list match{
-      case head::tail => if (x < head) false else geqListRec(x,tail)
-      case Nil => true
-    }
-      println("\n***************\nTesting functionListRec \n***************\n")
-      def falsefun(x: Int, y: Int) = false //> falsefun: (x: Int, y: Int)Boolean
-      def truefun(x: Int, y: Int) = true //> truefun: (x: Int, y: Int)Boolean
-
-      println(functionListRec(4, ls0, truefun)) //> true
-      println(functionListRec(4, ls0, falsefun)) //> true
-      println(functionListRec(4, ls1, _ >= _)) //> true
-      println(functionListRec(4, ls1, _ > _)) //> false
-      println(functionListRec(4, ls1, _ != _)) //> false
-      println(functionListRec(10, ls1, _ != _)) //> true
+//    def functionListRec(x: Int, list: List[Int],fun: Int => Boolean) : Boolean = list match{
+//      case head::tail => if (x < head) false else geqListRec(x,tail)
+//      case Nil => true
+//    }
+//      println("\n***************\nTesting functionListRec \n***************\n")
+//      def falsefun(x: Int, y: Int) = false //> falsefun: (x: Int, y: Int)Boolean
+//      def truefun(x: Int, y: Int) = true //> truefun: (x: Int, y: Int)Boolean
+//
+//      println(functionListRec(4, ls0, truefun)) //> true
+//      println(functionListRec(4, ls0, falsefun)) //> true
+//      println(functionListRec(4, ls1, _ >= _)) //> true
+//      println(functionListRec(4, ls1, _ > _)) //> false
+//      println(functionListRec(4, ls1, _ != _)) //> false
+//      println(functionListRec(10, ls1, _ != _)) //> true
 
 
     /**
@@ -234,8 +234,14 @@ object HW02 {
       * If the list is empty, this value should be 0.
       * (Should be written using match and recursion, and basic Scala control structures.)
       */
+      def countIn(list: List[Any], obj: Any):Int = {
+        def countInHelp(listHelp: List[Any], count: Int): Int = listHelp match {
+          case head::tail => if(head == obj) countInHelp(tail,count + 1) else countInHelp(tail,count)
+          case Nil => count
+        }
+        countInHelp(list,0)
+      }
 
-    /*
       println("\n***************\nTesting the contains function \n***************\n")
       val lsa = List(1.0, 2.0, 3.0, 4.0)
       val lsb = List(1, 2, 3, 4)
@@ -250,7 +256,7 @@ object HW02 {
       println(countIn(lsc, 1)) //> 4
       println(countIn(lsc, 0)) //> 4
       println(countIn(lsc, List(0))) //> 0
-  */
+
 
 
     /**
