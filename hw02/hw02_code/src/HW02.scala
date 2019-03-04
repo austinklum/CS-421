@@ -335,8 +335,25 @@ object HW02 {
       * If the lists are of unequal length, it should return a list for the first n pairs,
       * where n is the length of the shortest of the two lists.
       */
+    def applyIntLists(list1: List[Int], list2: List[Int], func: (Any, Any) => Any): List[Int] = {
+      var longerList = List()
+      var shorterList = List()
+      var endList = List()
+      if(list1.length > list2.length){
+        longerList ::: list1
+        shorterList ::: list2
+      } else{
+        longerList ::: list2
+        shorterList ::: list1
+      }
+      for(outerItem <- shorterList) {
+        for(innerItem <- longerList) {
+          
+        }
+      }
+      List()
+    }
 
-    /*
       println("\n***************\nTesting the applyIntLists function \n***************\n")
       val lsaa: List[Int] = List() //> lsaa  : List[Int] = List()
       val lsbb = (1 to 5).toList //> lsbb  : List[Int] = List(1, 2, 3, 4, 5)
@@ -349,7 +366,7 @@ object HW02 {
       println(applyIntLists(lscc, lsbb, _ + _)) //> List(2, 4, 6, 8, 10)
       println(applyIntLists(lscc, lsdd, _ + _)) //> List(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
       println(applyIntLists(lscc, lsdd, _ * _)) //> List(-1, -4, -9, -16, -25, -36, -49, -64, -81, -100)
-  */
+
 
 
     /**
