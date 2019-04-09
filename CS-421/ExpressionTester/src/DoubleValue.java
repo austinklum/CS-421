@@ -2,7 +2,7 @@
 public class DoubleValue implements Number {
 	private double value;
 	
-	public DoubleValue(int value) {
+	public DoubleValue(double value) {
 		this.value = value;
 	}
 	

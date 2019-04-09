@@ -1,6 +1,4 @@
 
-public interface Number {
-	
+public interface Number extends NumExp {
 	public double getValue();
-	
 }
