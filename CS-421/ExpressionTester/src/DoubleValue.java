@@ -14,4 +14,9 @@ public class DoubleValue implements Number {
 	public String toString() {
 		return "DoubleValue(" + value + ")" ;
 	}
+
+	@Override
+	public Number getNumber() {
+		return new DoubleValue(value);
+	}
 }

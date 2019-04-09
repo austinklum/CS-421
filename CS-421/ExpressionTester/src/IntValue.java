@@ -14,5 +14,10 @@ public class IntValue implements Number {
 	public String toString() {
 		return "IntValue(" + (int)value + ")" ;
 	}
+
+	@Override
+	public Number getNumber() {
+		return new IntValue(value);
+	}
 	
 }
