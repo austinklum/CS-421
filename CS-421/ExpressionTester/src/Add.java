@@ -1,5 +1,5 @@
 
-public class Plus implements BinOp {
+public class Add implements BinOp {
 
 	@Override
 	public Number apply(Number value1, Number value2) {

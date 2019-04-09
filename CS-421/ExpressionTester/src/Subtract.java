@@ -1,5 +1,5 @@
 
-public class Minus implements BinOp {
+public class Subtract implements BinOp {
 
 	@Override
 	public Number apply(Number value1, Number value2) {
