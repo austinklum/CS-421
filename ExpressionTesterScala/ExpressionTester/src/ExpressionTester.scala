@@ -8,9 +8,33 @@ object ExpressionTester {
     val zero = IntValue(0)
     val one = IntValue(1)
 
+//    val exp1 = UnExp(neg, BinExp(add, aInt, aFloat))
+//    val exp2 = BinExp(times, aInt, aFloat)
+//    val exp3 = CompExp(eq, exp1, exp2)
+//    val exp4 = CompExp(eq, exp1, exp1)
+//    val exp5 = CompExp(ne, exp1, exp2)
+//    val exp6 = BinExp(divide, BinExp(minus, one, one), one)
+    val exp1 = BinExp(times, BinExp(add, IntValue(4), IntValue(3)), BinExp(minus, IntValue(2), BinExp(divide, IntValue(6), IntValue(2))))
+    val exp2 = BinExp(times, DoubleValue(2.0), BinExp(minus, IntValue(3), BinExp(divide, IntValue(4), DoubleValue(2.0))))
+    val exp3 = BinExp(minus, IntValue(9), BinExp(minus, IntValue(6), BinExp(times, DoubleValue(5.0), UnExp(neg, IntValue(4)))))
+    val exp4 = BinExp(times, UnExp(neg, IntValue(7)), BinExp(times, IntValue(4), BinExp(minus, IntValue(3), BinExp(times, DoubleValue(4.0), DoubleValue(2.0)))))
+    val exp5 = CompExp(ne, BinExp(divide, IntValue(3), IntValue(2)), BinExp(divide, IntValue(3), DoubleValue(2.0)))
+    val exp6 = CompExp(eq, BinExp(divide, DoubleValue(3.0), IntValue(2)), BinExp(divide, IntValue(3), DoubleValue(2.0)))
+    val exp7 = CompExp(eq, BinExp(divide, BinExp(minus, one, one), one), zero)
+    val exp8 = CompExp(eq, BinExp(divide, BinExp(minus, one, one), one), zeroFloat)
 
+    println(evaluate(exp1))
+    println(evaluate(exp2))
+    println(evaluate(exp3))
+    println(evaluate(exp4))
+    println(evaluate(exp5))
+    println(evaluate(exp6))
+    println(evaluate(exp7))
+    println(evaluate(exp8))
 
   }
+
+  def evaluate(exp: Expression) = exp.toString
 
   trait Expression
   trait NumExp extends Expression {
@@ -42,18 +66,18 @@ object ExpressionTester {
   type UnOp = Number => Number
   type Comp = (Number,Number) => Bool
 
-  case class BinExp(op: BinOp, value1: Number, value2: Number) extends NumExp {
-    val value = op.apply(value1,value2)
+  case class BinExp(op: BinOp, value1: NumExp, value2: NumExp) extends NumExp {
+    val value = op.apply(value1.getNumber(),value2.getNumber())
     override def getNumber(): Number = value
     override def toString() = value.toString
   }
-  case class UnExp(op: UnOp, value1: Number) extends NumExp {
-    val value = op.apply(value1)
+  case class UnExp(op: UnOp, value1: NumExp) extends NumExp {
+    val value = op.apply(value1.getNumber())
     override def getNumber(): Number = value
     override def toString() = value.toString
   }
-  case class CompExp(op: Comp, value1: Number, value2: Number) extends Expression {
-    val value = op.apply(value1,value2)
+  case class CompExp(op: Comp, value1: NumExp, value2: NumExp) extends Expression {
+    val value = op.apply(value1.getNumber(),value2.getNumber())
     def getBool(): Bool= value
     override def toString() = value.toString
   }
@@ -64,13 +88,13 @@ object ExpressionTester {
     case (IntValue(value1),DoubleValue(value2)) => DoubleValue(value1 + value2)
     case (DoubleValue(value1),DoubleValue(value2)) => DoubleValue(value1 + value2)
   }
-  val subtract : BinOp = {
+  val minus : BinOp = {
     case (IntValue(value1),IntValue(value2)) => IntValue(value1 - value2)
     case (DoubleValue(value1),IntValue(value2)) => DoubleValue(value1 - value2)
     case (IntValue(value1),DoubleValue(value2)) => DoubleValue(value1 - value2)
     case (DoubleValue(value1),DoubleValue(value2)) => DoubleValue(value1 - value2)
   }
-  val multiply : BinOp = {
+  val times : BinOp = {
     case (IntValue(value1),IntValue(value2)) => IntValue(value1 * value2)
     case (DoubleValue(value1),IntValue(value2)) => DoubleValue(value1 * value2)
     case (IntValue(value1),DoubleValue(value2)) => DoubleValue(value1 * value2)
@@ -82,18 +106,18 @@ object ExpressionTester {
     case (IntValue(value1),DoubleValue(value2)) => DoubleValue(value1 / value2)
     case (DoubleValue(value1),DoubleValue(value2)) => DoubleValue(value1 / value2)
   }
-  val negate : UnOp = {
+  val neg : UnOp = {
     case (IntValue(value)) => IntValue(value * -1)
     case (DoubleValue(value)) => DoubleValue(value * -1)
   }
- val equal : Comp = {
+ val eq : Comp = {
     case (IntValue(value1),IntValue(value2)) => Bool(value1 == value2)
     case (DoubleValue(value1),IntValue(value2)) => Bool(value1 == value2)
     case (IntValue(value1),DoubleValue(value2)) => Bool(value1 == value2)
     case (DoubleValue(value1),DoubleValue(value2)) => Bool(value1 == value2)
   }
 
-  val notEqual : Comp = {
+  val ne : Comp = {
     case (IntValue(value1),IntValue(value2)) => Bool(value1 != value2)
     case (DoubleValue(value1),IntValue(value2)) => Bool(value1 != value2)
     case (IntValue(value1),DoubleValue(value2)) => Bool(value1 != value2)
