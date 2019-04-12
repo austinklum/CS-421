@@ -33,14 +33,14 @@ public class ExpresssionTester {
 		CompExp exp7 = new CompExp(eq,new BinExp(divide,new BinExp(minus,one,one),one),zero);
 		CompExp exp8 = new CompExp(eq,new BinExp(divide,new BinExp(minus,one,one),one),zeroFloat);
 		
-		System.out.println("words => " + evaluate(exp1));
-		System.out.println("words => " + evaluate(exp2));
-		System.out.println("words => " + evaluate(exp3));
-		System.out.println("words => " + evaluate(exp4));
-		System.out.println("words => " + evaluate(exp5));
-		System.out.println("words => " + evaluate(exp6));
-		System.out.println("words => " + evaluate(exp7));
-		System.out.println("words => " + evaluate(exp8));
+		System.out.println("* + 4 3 - 2 / 6 2 => " + evaluate(exp1));
+		System.out.println("* 2.0 - 3 / 4 2.0 => " + evaluate(exp2));
+		System.out.println("- 9 - 6 - * 5.0 4 => " + evaluate(exp3));
+		System.out.println("- * 7 * 4 - 3 * 4.0 2.0 => " + evaluate(exp4));
+		System.out.println("/ 3 2 != / 3 2.0 => " + evaluate(exp5));
+		System.out.println("/ 3.0 2 == / 3 2.0 => " + evaluate(exp6));
+		System.out.println("/ - 1 1 1 == 0 => " + evaluate(exp7));
+		System.out.println("/ - 1 1 1 == 0.0 => " + evaluate(exp8));
 	}
 	
 	public static String evaluate(Expression exp) {
