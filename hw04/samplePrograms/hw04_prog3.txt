@@ -1,0 +1,20 @@
+int a = 1;
+int b = 1;
+
+int funa(int i) {
+   funb(i);
+}
+
+void funb(int z) {
+   other();
+   a = * b z;
+}
+
+void other() {
+    b = 5;
+}
+
+int main() {
+   int a = 1;
+   int b = fun(a);
+}

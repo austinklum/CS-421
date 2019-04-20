@@ -1,0 +1,28 @@
+int a = 1;
+
+int b;
+
+
+int helper(int x, int y) {
+
+    int i = + x y;
+
+    b = i;
+
+    int j = - i a;
+ 
+    return j;
+
+}
+
+
+
+main() {
+
+    int i = 100;
+
+    int j = 101;
+
+    j = helper(i, j);
+
+}
