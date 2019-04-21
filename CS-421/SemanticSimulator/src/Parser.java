@@ -178,8 +178,13 @@ public class Parser
      * @return An array consisting of the various portions of the program, in
      *         order (top to bottom in programText).
      */
-    public static String[] getParts(String programText)
+    public static String[] getParts(String programText, String methodRegex)
     {
+    	
+    	//private final static String methodRegex = "(int|void)\\s+[a-z]+\\s*\\(.*\\)\\s*\\{.*\\}.*";
+        String programRegex = String.format("(.*)(%s)", methodRegex);
+        Pattern programPattern = Pattern.compile(programRegex);
+    	
         LinkedList<String> parts = new LinkedList<>();
         Matcher match = programPattern.matcher(programText);
         while (match.find())
@@ -197,6 +202,7 @@ public class Parser
     		System.out.printf("%02d: %s\n", i, parts[i]);
     	}
     }
+
 }
 
 
