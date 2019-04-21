@@ -32,7 +32,7 @@ public class SemanticSimulator {
 	String[] program;
 	boolean globalsExist;
 	HashMap<String,Integer> gamma;
-	HashMap<Integer,Integer> mu;
+	HashMap<Integer,String> mu;
 	int stackPointer;
 	
 	public SemanticSimulator(String[] parts) {
