@@ -23,7 +23,7 @@ import java.util.HashMap;
 public class SemanticSimulator {
 
 	public static void main(String[] args) {
-		String[] parts = Parser.getParts(Parser.readFile("hw04_prog3.txt"),"(int|void)\\s+[a-z]+\\s*\\(.*\\)\\s*\\{.*\\}.*");
+		String[] parts = Parser.getParts(Parser.readFile("hw04_prog14.txt"),"(int|void)\\s+[a-z]+\\s*\\(.*\\)\\s*\\{.*\\}.*");
 		Parser.print(parts);
 		SemanticSimulator sim = new SemanticSimulator(parts);
 		sim.simulate();
@@ -58,12 +58,9 @@ public class SemanticSimulator {
 	}
 //	process func
 	public void processFunc(String funcLine) {
-		int firstParen = funcLine.indexOf('(');
-		int secondParen = funcLine.indexOf(')');
+		Function func = new Function(funcLine);
 		
-		String methodName = funcLine.substring(0,firstParen);
-		String parameterLine = funcLine.substring(firstParen+1,secondParen);
-		String[] parameters = Parser.getParts(parameterLine,"(int)\\s+[a-z]*");
+		System.out.println(func);
 	}
 //	process line
 //	add var
@@ -72,4 +69,43 @@ public class SemanticSimulator {
 //	display gamma
 //	display mu
 //	display sigma
+	private class Function {
+		
+		boolean isVoid;
+		String methodName;
+		boolean areParameters;
+		String[] parameters;
+		String[] stmts;
+		
+		public Function(String funcLine) {
+			int firstParen = funcLine.indexOf('(');
+			int secondParen = funcLine.indexOf(')');
+			
+			methodName = funcLine.substring(funcLine.indexOf(' ')+1,firstParen);
+			isVoid = funcLine.charAt(0) != 'i';
+			parameters = funcLine.substring(firstParen+1,secondParen).trim().split("\\s*,\\s*");
+			stmts = funcLine.substring(funcLine.indexOf('{')+1,funcLine.indexOf('}')).trim().split("\\s*;\\s*");
+		}
+		
+		@Override
+		public String toString() {
+			StringBuilder str = new StringBuilder();
+			str.append("isVoid : " + isVoid + "\n");
+			str.append("Name   : " + methodName + "\n");
+			
+			str.append("Para   : \n");
+			for(String para : parameters) {
+				str.append("  " + para + "\n");
+			}
+			
+			str.append("Stmts  : \n");
+			for(String stmt : stmts) {
+				str.append("  " + stmt + "\n");
+			}
+			
+			return str.toString();
+		}
+	}
 }
+
+
