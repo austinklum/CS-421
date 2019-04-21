@@ -59,8 +59,34 @@ public class SemanticSimulator {
 //	process func
 	public void processFunc(String funcLine) {
 		Function func = new Function(funcLine);
+		printState(func.methodName + "_in");
 		
 		System.out.println(func);
+	}
+	
+	private void printState(String stateName) {
+		System.out.println("sigma_" + stateName + ": \n");
+		System.out.print("  gamma: {");
+		int count = 0;
+		for (String key : gamma.keySet()){
+            System.out.print("<" + key + ", " + gamma.get(key) + ">");
+            if (count < gamma.size()) {
+            	System.out.print(", ");
+            	count++;
+            }
+		} 
+		System.out.println("}");
+		System.out.print("mu   :");
+		count = 0;
+		for(Integer key : mu.keySet()) {
+			System.out.print("<" + key + ", " + mu.get(key) + ">");
+            if (count < gamma.size()) {
+            	System.out.print(", ");
+            	count++;
+            }
+		}
+		System.out.println("}");
+		System.out.println("a = " + stackPointer);
 	}
 //	process line
 //	add var
