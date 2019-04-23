@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 public class SemanticSimulator {
 
 	public static void main(String[] args) {
-		String[] parts = Parser.getParts(Parser.readFile("hw04_prog1.txt"),"(int|void)\\s+[a-z]+\\s*\\(.*\\)\\s*\\{.*\\}.*");
+		String[] parts = Parser.getParts(Parser.readFile("hw04_prog2.txt"),"(int|void)\\s+[a-z]+\\s*\\(.*\\)\\s*\\{.*\\}.*");
 		//Parser.print(parts);
 		SemanticSimulator sim = new SemanticSimulator(parts);
 		sim.simulate();
@@ -48,18 +48,18 @@ public class SemanticSimulator {
 		mu = new HashMap<>();
 		funcMap = new HashMap<>();
 		stackPointer = 0;
-		for(String func : program) {
-			funcMap.put(getFuncMapKey(func), func);
+		for(int i = 1; i < program.length; i++) {
+			funcMap.put(getFuncMapKey(program[i]), program[i]);
 		}
 	}
 
 	public void simulate() {
-		printState("_0");
+		printState("0");
 		for(String stmt : globals) {
 			processStmt(stmt,"global");
 		}
 		printState("global");
-		processFunc("main0");
+		processFunc("main()");
 	}
 
 //	find main
@@ -81,7 +81,9 @@ public class SemanticSimulator {
 	
 //	process func
 	public int processFunc(String funcSig) {
-		Function func = new Function(funcMap.get(getFuncMapKey(funcSig)));
+		String str0 = getFuncMapKey(funcSig);
+		String str = funcMap.get(str0);
+		Function func = new Function(str);
 		int i = 0;
 		
 		String[] paramsPassed = getParamsFromFuncSig(funcSig);
@@ -114,26 +116,37 @@ public class SemanticSimulator {
 		String[] stmtParts = stmt.trim().split("\\s*=\\s*");
 		
 		//Declaration
-		String varName = stmtParts[0].split("\\s*")[1];
-		if(stmtParts[0].length() >= 4 && stmtParts[0].substring(0,4).equals("int ")){
+		String lhs = stmtParts[0];
+		
+		String varName = lhs;
+		if (lhs.contains(" ")) {
+			varName = lhs.split("\\s+")[1];
+		}
+		if(lhs.length() >= 4 && lhs.substring(0,4).equals("int ")){
 			addVar(varName);
 		} 
+		
 		//Assignment
 		if(stmtParts.length > 1) {
 			updateVar(varName, evaluate(stmtParts[1]));
 		}
 		
+		//Function
+		if(lhs.contains("(")) {
+			processFunc(getFuncName(stmt));
+		}
+		
 		//Return stmt
-		if(stmtParts[0].length() >= 6 && stmtParts[0].substring(0,6).equals("return ")) {
+		if(lhs.length() >= 7 && lhs.substring(0,7).equals("return ")) {
 			addVar(funcName);
 			updateVar(funcName, evaluate(varName));
 		}
 	}
 
 	private void printState(String stateName) {
-		System.out.println("sigma_" + stateName + ": \n");
+		System.out.println("sigma_" + stateName + ":");
 		System.out.print("  gamma: {");
-		int count = 0;
+		int count = 1;
 		for (String key : gamma.keySet()){
             System.out.print("<" + key + ", " + gamma.get(key) + ">");
             if (count < gamma.size()) {
@@ -142,8 +155,8 @@ public class SemanticSimulator {
             }
 		} 
 		System.out.println("}");
-		System.out.print("mu   :");
-		count = 0;
+		System.out.print("  mu   : {");
+		count = 1;
 		for(Integer key : mu.keySet()) {
 			System.out.print("<" + key + ", " + (mu.get(key) == -1 ? "undef" : mu.get(key).toString()) + ">");
             if (count < gamma.size()) {
@@ -153,6 +166,7 @@ public class SemanticSimulator {
 		}
 		System.out.println("}");
 		System.out.println("a = " + stackPointer);
+		System.out.println();
 	}
 	
 	private void addVar(String var) {
@@ -184,7 +198,8 @@ public class SemanticSimulator {
 	}
 
 	private String getFuncMapKey(String name) {
-		return getFuncName(name) + getParamCount(name);
+		String str =  getFuncName(name) + getParamCount(name);
+		return str;
 	}
 	
 //	private int evaluate(String expr) {
@@ -279,7 +294,8 @@ public class SemanticSimulator {
 			if(matcher.find()) {
 					tmp = matcher.start();
 			}
-			return funcLine.substring(tmp,funcLine.indexOf('('));
+			String str = funcLine.substring(tmp,funcLine.indexOf('(')).trim();
+			return str;
 		}
 	
 	private int getParamCount(String funcLine) {
@@ -287,7 +303,11 @@ public class SemanticSimulator {
 	}
 	
 	private String[] getParamsFromFuncSig(String funcLine) {
-		return funcLine.substring(funcLine.indexOf('(')+1,funcLine.indexOf(')')).replaceAll("int", "").trim().split("\\s*,\\s*");
+		String[] params = funcLine.substring(funcLine.indexOf('(')+1,funcLine.indexOf(')')).replaceAll("int", "").trim().split("\\s*,\\s*");
+		if(params.length == 1 && params[0].equals("")) {
+			return new String[0];
+		}
+		return params;
 	}
 
 //	add var
