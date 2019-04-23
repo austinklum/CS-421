@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,6 +35,7 @@ public class SemanticSimulator {
 	String[] program;
 	boolean globalsExist;
 	String[] globals;
+	HashMap<String,String> funcMap;
 	HashMap<String, Integer> gamma;
 	HashMap<Integer, Integer> mu;
 	int stackPointer;
@@ -44,7 +46,11 @@ public class SemanticSimulator {
 		globals = parts[0].trim().split("\\s*;\\s*");
 		gamma = new HashMap<>();
 		mu = new HashMap<>();
+		funcMap = new HashMap<>();
 		stackPointer = 0;
+		for(String func : program) {
+			funcMap.put(getFuncMapKey(func), func);
+		}
 	}
 
 	public void simulate() {
@@ -69,13 +75,13 @@ public class SemanticSimulator {
 		return -1;
 	}
 //	process func
-	public void processFunc(String funcLine) {
+	public int processFunc(String funcLine) {
 		Function func = new Function(funcLine);
 		
 		//printState(func.methodName + "_in");
 		
 		//System.out.println(func);
-		evaluate("thing");
+		return evaluate("thing");
 	}
 	
 	private void printState(String stateName) {
@@ -115,7 +121,12 @@ public class SemanticSimulator {
 			
 		}
 	}
-	
+
+	private void addVar(String var) {
+		gamma.put(var, stackPointer);
+		mu.put(stackPointer, -1);
+		stackPointer++;
+	}
 	private void updateVar(String varName, int value) {
 		mu.replace(gamma.get(varName), value);
 	}
@@ -124,23 +135,34 @@ public class SemanticSimulator {
 		mu.remove(gamma.remove(varName));
 		stackPointer--;
 	}
+	
+	private int getVal(String varName) {
+		return mu.get(gamma.get(varName));
+	}
 
+	private int getMeaning(String name) {
+		if (name.matches("\\d+")) {
+			return Integer.parseInt(name);
+	    }else if (name.contains("(")) {
+			return processFunc(funcMap.get(getFuncMapKey(name)));
+		} else {
+			return getVal(name);
+		}
+	}
+
+	private String getFuncMapKey(String name) {
+		return getFuncName(name) + getParamCount(name);
+	}
+	
 	private int evaluate(String expr) {
 		//String[] exprParts = parseTokens(expr);
 		//Ops :  \s*(\+|-|\*|\/)*\s*
 		//funcs: \s*[a-z]*\(.*\)\s*
 		//vars: \s*[a-z]*\s*
-		expr = "+2*z function()";
-		 Pattern programPattern = Pattern.compile("(\\s*[a-z]*\\(.*\\)\\s*)|(\\s*[a-z]*\\s*)|(\\s*(\\+|-|\\*|\\/)*\\s*)");
-		 Matcher match = programPattern.matcher(expr);
-	        while (match.find()) {
-	        	String str0 = match.group(0);
-	        	String str1 = match.group(1);
-	        	String str2 = match.group(2);
-	        	String str3 = match.group(3);
-	        	String str4 = match.group(4);
-	        	//match = programPattern.matcher(expr);
-	        }
+		expr = "+2*z function(x ,y   )anothaOne(  q  ,  r  )(p) 53";
+		String[] rhsParts = removeSpacesFromFuncs(expr).split("\\s+");
+		
+		
 		 //Number
 		//Variable Name
 		//Binary Operation
@@ -148,10 +170,88 @@ public class SemanticSimulator {
 		return -1;
 	}
 
-	private void addVar(String var) {
-		gamma.put(var, stackPointer);
-		mu.put(stackPointer, -1);
-		stackPointer++;
+	static Boolean isOp(String str) 
+	{ 
+	    // If the character is a digit  
+	    // then it must be an operand 
+		switch(str.charAt(0)) {
+			case '+':
+			case '-':
+			case '*':
+			case '/':
+				return true;
+			default: 
+				return false;
+		}
+	} 
+	   
+	private int evaluatePrefix(String[] rhs) { 
+	    Stack<Integer> Stack = new Stack<Integer>(); 
+	   
+	    for (int j = rhs.length - 1; j >= 0; j--) { 
+	   
+	        // Push operand to Stack 
+	        // To convert exprsn[j] to digit subtract 
+	        // '0' from exprsn[j]. 
+	        if (!isOp(rhs[j]))  
+	            Stack.push(getMeaning(rhs[j])); 
+	           
+	        else { 
+	   
+	            // Operator encountered 
+	            // Pop two elements from Stack 
+	            int o1 = Stack.peek(); 
+	            Stack.pop(); 
+	            int o2 = Stack.peek(); 
+	            Stack.pop(); 
+	   
+	            // Use switch case to operate on o1  
+	            // and o2 and perform o1 O o2. 
+	            switch (rhs[j].charAt(0)) { 
+	            case '+': 
+	                Stack.push(o1 + o2); 
+	                break; 
+	            case '-': 
+	                Stack.push(o1 - o2); 
+	                break; 
+	            case '*': 
+	                Stack.push(o1 * o2); 
+	                break; 
+	            case '/': 
+	                Stack.push(o1 / o2); 
+	                break; 
+	            } 
+	        } 
+	    } 
+	   
+	    return Stack.peek(); 
+	} 
+	
+	private String removeSpacesFromFuncs(String expr) {
+		int start = expr.indexOf('(', 0);
+		int end = expr.indexOf(')', 0);
+		while(end < expr.length() && end > 0) {
+			String substr = expr.substring(start,++end);
+			String substrNoSpace = substr.replaceAll("\\s+","");
+			expr = expr.replace(substr, substrNoSpace);
+			
+			start = expr.indexOf('(', end);
+			end = expr.indexOf(')', end);
+		}
+		return expr;
+	}
+	private	String getFuncName(String funcLine) {
+			Pattern pattern = Pattern.compile("\\s+");
+		    Matcher matcher = pattern.matcher(funcLine);
+			int tmp = 0;
+			if(matcher.find()) {
+					tmp = matcher.start();
+			}
+			return funcLine.substring(tmp,funcLine.indexOf('('));
+		}
+	
+	private int getParamCount(String funcLine) {
+		return funcLine.substring(funcLine.indexOf('('),funcLine.indexOf(')')+1).split(",").length;
 	}
 //	add var
 //	update var
@@ -162,7 +262,7 @@ public class SemanticSimulator {
 	private class Function {
 		
 		boolean isVoid;
-		String methodName;
+		String funcName;
 		boolean areParameters;
 		String[] parameters;
 		String[] stmts;
@@ -171,17 +271,17 @@ public class SemanticSimulator {
 			int firstParen = funcLine.indexOf('(');
 			int secondParen = funcLine.indexOf(')');
 			
-			methodName = funcLine.substring(funcLine.indexOf(' ')+1,firstParen);
+		    funcName = getFuncName(funcLine);
 			isVoid = funcLine.charAt(0) != 'i';
 			parameters = funcLine.substring(firstParen+1,secondParen).trim().split("\\s*,\\s*");
 			stmts = funcLine.substring(funcLine.indexOf('{')+1,funcLine.indexOf('}')).trim().split("\\s*;\\s*");
 		}
-		
+
 		@Override
 		public String toString() {
 			StringBuilder str = new StringBuilder();
 			str.append("isVoid : " + isVoid + "\n");
-			str.append("Name   : " + methodName + "\n");
+			str.append("Name   : " + funcName + "\n");
 			
 			str.append("Para   : \n");
 			for(String para : parameters) {
