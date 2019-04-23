@@ -27,7 +27,7 @@ public class SemanticSimulator {
 
 	public static void main(String[] args) {
 		String[] parts = Parser.getParts(Parser.readFile("hw04_prog1.txt"),"(int|void)\\s+[a-z]+\\s*\\(.*\\)\\s*\\{.*\\}.*");
-		Parser.print(parts);
+		//Parser.print(parts);
 		SemanticSimulator sim = new SemanticSimulator(parts);
 		sim.simulate();
 	}
@@ -54,14 +54,12 @@ public class SemanticSimulator {
 	}
 
 	public void simulate() {
-//		printState("0");
-//		if(globalsExist) {
-//			for(String stmt : globals) {
-//				processStmt(stmt);
-//			}
-//		}
-//		printState("global");
-		processFunc(program[1]);
+		printState("_0");
+		for(String stmt : globals) {
+			processStmt(stmt,"global");
+		}
+		printState("global");
+		processFunc("main0");
 	}
 
 //	find main
@@ -74,16 +72,64 @@ public class SemanticSimulator {
 		}
 		return -1;
 	}
+	
+//	int myFunc(int x, int y) {
+//		return x + y;
+//	}
+//	
+//	myFunc(2,2);
+	
 //	process func
-	public int processFunc(String funcLine) {
-		Function func = new Function(funcLine);
+	public int processFunc(String funcSig) {
+		Function func = new Function(funcMap.get(getFuncMapKey(funcSig)));
+		int i = 0;
 		
-		//printState(func.methodName + "_in");
+		String[] paramsPassed = getParamsFromFuncSig(funcSig);
 		
-		//System.out.println(func);
-		return evaluate("thing");
+		// Loop on parameters passed in
+		for(String param : paramsPassed) {
+			addVar(func.parameters[i]);
+			updateVar(func.parameters[i], getMeaning(param));
+			i++;
+		}
+		
+		printState(func.funcName + "_in");
+		
+		for(String stmt : func.stmts) {
+			processStmt(stmt, func.funcName);
+		}
+		
+		printState(func.funcName + "_out");
+		
+		for(String param : paramsPassed) {
+			deleteVar(param);
+		}
+		return func.isVoid ? 0 : deleteVar(func.funcName);
 	}
 	
+
+	
+//	process line
+	private void processStmt(String stmt, String funcName) {
+		String[] stmtParts = stmt.trim().split("\\s*=\\s*");
+		
+		//Declaration
+		String varName = stmtParts[0].split("\\s*")[1];
+		if(stmtParts[0].length() >= 4 && stmtParts[0].substring(0,4).equals("int ")){
+			addVar(varName);
+		} 
+		//Assignment
+		if(stmtParts.length > 1) {
+			updateVar(varName, evaluate(stmtParts[1]));
+		}
+		
+		//Return stmt
+		if(stmtParts[0].length() >= 6 && stmtParts[0].substring(0,6).equals("return ")) {
+			addVar(funcName);
+			updateVar(funcName, evaluate(varName));
+		}
+	}
+
 	private void printState(String stateName) {
 		System.out.println("sigma_" + stateName + ": \n");
 		System.out.print("  gamma: {");
@@ -109,19 +155,6 @@ public class SemanticSimulator {
 		System.out.println("a = " + stackPointer);
 	}
 	
-//	process line
-	private void processStmt(String stmt) {
-		String[] stmtParts = stmt.trim().split("\\s*=\\s*");
-		if(stmtParts[0].length() > 4 && stmtParts[0].substring(0,4).equals("int ")){
-			String varName = stmtParts[0].split("\\s*")[1];
-			addVar(varName);
-			if(stmtParts.length > 1) {
-				updateVar(varName,evaluate(stmtParts[1]));
-			}
-			
-		}
-	}
-
 	private void addVar(String var) {
 		gamma.put(var, stackPointer);
 		mu.put(stackPointer, -1);
@@ -131,9 +164,9 @@ public class SemanticSimulator {
 		mu.replace(gamma.get(varName), value);
 	}
 	
-	private void deleteVar(String varName) {
-		mu.remove(gamma.remove(varName));
+	private int deleteVar(String varName) {
 		stackPointer--;
+		return mu.remove(gamma.remove(varName));
 	}
 	
 	private int getVal(String varName) {
@@ -144,7 +177,7 @@ public class SemanticSimulator {
 		if (name.matches("\\d+")) {
 			return Integer.parseInt(name);
 	    }else if (name.contains("(")) {
-			return processFunc(funcMap.get(getFuncMapKey(name)));
+			return processFunc(name);
 		} else {
 			return getVal(name);
 		}
@@ -154,21 +187,21 @@ public class SemanticSimulator {
 		return getFuncName(name) + getParamCount(name);
 	}
 	
-	private int evaluate(String expr) {
-		//String[] exprParts = parseTokens(expr);
-		//Ops :  \s*(\+|-|\*|\/)*\s*
-		//funcs: \s*[a-z]*\(.*\)\s*
-		//vars: \s*[a-z]*\s*
-		expr = "+2*z function(x ,y   )anothaOne(  q  ,  r  )(p) 53";
-		String[] rhsParts = removeSpacesFromFuncs(expr).split("\\s+");
-		
-		
-		 //Number
-		//Variable Name
-		//Binary Operation
-		//Function Call
-		return -1;
-	}
+//	private int evaluate(String expr) {
+//		//String[] exprParts = parseTokens(expr);
+//		//Ops :  \s*(\+|-|\*|\/)*\s*
+//		//funcs: \s*[a-z]*\(.*\)\s*
+//		//vars: \s*[a-z]*\s*
+//		expr = "+2*z function(x ,y   )anothaOne(  q  ,  r  )(p) 53";
+//		
+//		
+//		
+//		 //Number
+//		//Variable Name
+//		//Binary Operation
+//		//Function Call
+//		return -1;
+//	}
 
 	static Boolean isOp(String str) 
 	{ 
@@ -185,9 +218,9 @@ public class SemanticSimulator {
 		}
 	} 
 	   
-	private int evaluatePrefix(String[] rhs) { 
+	private int evaluate(String expr) { 
+		String[] rhs = removeSpacesFromFuncs(expr).split("\\s+");
 	    Stack<Integer> Stack = new Stack<Integer>(); 
-	   
 	    for (int j = rhs.length - 1; j >= 0; j--) { 
 	   
 	        // Push operand to Stack 
@@ -195,7 +228,6 @@ public class SemanticSimulator {
 	        // '0' from exprsn[j]. 
 	        if (!isOp(rhs[j]))  
 	            Stack.push(getMeaning(rhs[j])); 
-	           
 	        else { 
 	   
 	            // Operator encountered 
@@ -253,6 +285,11 @@ public class SemanticSimulator {
 	private int getParamCount(String funcLine) {
 		return funcLine.substring(funcLine.indexOf('('),funcLine.indexOf(')')+1).split(",").length;
 	}
+	
+	private String[] getParamsFromFuncSig(String funcLine) {
+		return funcLine.substring(funcLine.indexOf('(')+1,funcLine.indexOf(')')).replaceAll("int", "").trim().split("\\s*,\\s*");
+	}
+
 //	add var
 //	update var
 //	delete var
@@ -268,12 +305,9 @@ public class SemanticSimulator {
 		String[] stmts;
 		
 		public Function(String funcLine) {
-			int firstParen = funcLine.indexOf('(');
-			int secondParen = funcLine.indexOf(')');
-			
 		    funcName = getFuncName(funcLine);
 			isVoid = funcLine.charAt(0) != 'i';
-			parameters = funcLine.substring(firstParen+1,secondParen).trim().split("\\s*,\\s*");
+			parameters = getParamsFromFuncSig(funcLine);
 			stmts = funcLine.substring(funcLine.indexOf('{')+1,funcLine.indexOf('}')).trim().split("\\s*;\\s*");
 		}
 
@@ -283,9 +317,9 @@ public class SemanticSimulator {
 			str.append("isVoid : " + isVoid + "\n");
 			str.append("Name   : " + funcName + "\n");
 			
-			str.append("Para   : \n");
-			for(String para : parameters) {
-				str.append("  " + para + "\n");
+			str.append("Param  : \n");
+			for(String param : parameters) {
+				str.append("  " + param + "\n");
 			}
 			
 			str.append("Stmts  : \n");
