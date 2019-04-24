@@ -109,11 +109,16 @@ public class SemanticSimulator {
 		
 		printState(func.funcName + "_out");
 		
+		if(func.funcName.equals("main")) {
+			return 0;
+		}
+		
 		for(String varName : func.varsAdded) {
 			if(!varName.equals(func.funcName)) {
 				deleteVar(varName);
 			}
 		}
+		
 		
 		return func.isVoid ? 0 : deleteVarFuncResult(func.funcName, func.funcResultIndex);
 	}
@@ -142,7 +147,7 @@ public class SemanticSimulator {
 		
 		//Function
 		if(lhs.contains("(")) {
-			processFunc(getFuncName(stmt));
+			processFunc(stmt);
 		}
 		
 		//Return stmt
