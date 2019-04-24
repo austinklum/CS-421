@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
 public class SemanticSimulator {
 
 	public static void main(String[] args) {
-		String[] parts = Parser.getParts(Parser.readFile("hw04_prog2.txt"),"(int|void)\\s+[a-z]+\\s*\\(.*\\)\\s*\\{.*\\}.*");
+		String[] parts = Parser.getParts(Parser.readFile("hw04_prog3.txt"),"(int|void)\\s+[a-z]+\\s*\\(.*\\)\\s*\\{.*\\}.*");
 		//Parser.print(parts);
 		SemanticSimulator sim = new SemanticSimulator(parts);
 		sim.simulate();
@@ -36,16 +37,16 @@ public class SemanticSimulator {
 	boolean globalsExist;
 	String[] globals;
 	HashMap<String,String> funcMap;
-	HashMap<String, Integer> gamma;
-	HashMap<Integer, Integer> mu;
+	LinkedList<KeyValuePair> gamma;
+	LinkedList<KeyValuePair> mu;
 	int stackPointer;
 	
 	public SemanticSimulator(String[] parts) {
 		program = parts;
 		globalsExist = !parts[0].equals("");
 		globals = parts[0].trim().split("\\s*;\\s*");
-		gamma = new HashMap<>();
-		mu = new HashMap<>();
+		gamma = new LinkedList<>();
+		mu = new LinkedList<>();
 		funcMap = new HashMap<>();
 		stackPointer = 0;
 		for(int i = 1; i < program.length; i++) {
@@ -55,8 +56,13 @@ public class SemanticSimulator {
 
 	public void simulate() {
 		printState("0");
+		Function global = new Function();
+		global.funcName ="global";
+		global.stmts = globals;
+		global.varsAdded = new LinkedList<>();
+	
 		for(String stmt : globals) {
-			processStmt(stmt,"global");
+			processStmt(stmt, global);
 		}
 		printState("global");
 		processFunc("main()");
@@ -90,7 +96,7 @@ public class SemanticSimulator {
 		
 		// Loop on parameters passed in
 		for(String param : paramsPassed) {
-			addVar(func.parameters[i]);
+			addVar(func.parameters[i], func);
 			updateVar(func.parameters[i], getMeaning(param));
 			i++;
 		}
@@ -98,21 +104,24 @@ public class SemanticSimulator {
 		printState(func.funcName + "_in");
 		
 		for(String stmt : func.stmts) {
-			processStmt(stmt, func.funcName);
+			processStmt(stmt, func);
 		}
 		
 		printState(func.funcName + "_out");
 		
-		for(String param : paramsPassed) {
-			deleteVar(param);
+		for(String varName : func.varsAdded) {
+			if(!varName.equals(func.funcName)) {
+				deleteVar(varName);
+			}
 		}
-		return func.isVoid ? 0 : deleteVar(func.funcName);
+		
+		return func.isVoid ? 0 : deleteVarFuncResult(func.funcName, func.funcResultIndex);
 	}
 	
 
 	
 //	process line
-	private void processStmt(String stmt, String funcName) {
+	private void processStmt(String stmt, Function func) {
 		String[] stmtParts = stmt.trim().split("\\s*=\\s*");
 		
 		//Declaration
@@ -123,7 +132,7 @@ public class SemanticSimulator {
 			varName = lhs.split("\\s+")[1];
 		}
 		if(lhs.length() >= 4 && lhs.substring(0,4).equals("int ")){
-			addVar(varName);
+			addVar(varName, func);
 		} 
 		
 		//Assignment
@@ -138,8 +147,8 @@ public class SemanticSimulator {
 		
 		//Return stmt
 		if(lhs.length() >= 7 && lhs.substring(0,7).equals("return ")) {
-			addVar(funcName);
-			updateVar(funcName, evaluate(varName));
+			addVar(func.funcName, func);
+			updateVar(func.funcName, evaluate(varName));
 		}
 	}
 
@@ -147,8 +156,8 @@ public class SemanticSimulator {
 		System.out.println("sigma_" + stateName + ":");
 		System.out.print("  gamma: {");
 		int count = 1;
-		for (String key : gamma.keySet()){
-            System.out.print("<" + key + ", " + gamma.get(key) + ">");
+		for (KeyValuePair item : gamma){
+            System.out.print(item);
             if (count < gamma.size()) {
             	System.out.print(", ");
             	count++;
@@ -157,9 +166,9 @@ public class SemanticSimulator {
 		System.out.println("}");
 		System.out.print("  mu   : {");
 		count = 1;
-		for(Integer key : mu.keySet()) {
-			System.out.print("<" + key + ", " + (mu.get(key) == -1 ? "undef" : mu.get(key).toString()) + ">");
-            if (count < gamma.size()) {
+		for(KeyValuePair item : mu) {
+			System.out.print(item);
+            if (count < mu.size()) {
             	System.out.print(", ");
             	count++;
             }
@@ -169,22 +178,56 @@ public class SemanticSimulator {
 		System.out.println();
 	}
 	
-	private void addVar(String var) {
-		gamma.put(var, stackPointer);
-		mu.put(stackPointer, -1);
+	private int findPairIndex(String key, LinkedList<KeyValuePair> list) {
+		int i = 0;
+		int biggestAddrSpace = 0;
+		int retVal = -1;
+		boolean isGamma = list.equals(gamma);
+		
+		for(KeyValuePair item : list) {
+			if(item.key.equals(key)) {
+				if(isGamma && biggestAddrSpace <= item.value) {
+					biggestAddrSpace = item.value;
+					retVal = i;
+				} else if (!isGamma) {
+					retVal = i;
+				}
+			}
+			i++;
+		}
+		return retVal;
+	}
+	
+	private void addVar(String var, Function func) {
+
+		func.varsAdded.add(var);
+		gamma.add(new KeyValuePair(var, stackPointer));
+		mu.add(new KeyValuePair(String.valueOf(stackPointer), null));
 		stackPointer++;
+		
+		if(var.equals(func.funcName)) {
+			func.funcResultIndex = stackPointer - 1;
+		}
 	}
 	private void updateVar(String varName, int value) {
-		mu.replace(gamma.get(varName), value);
+		//int i = findPairIndex(varName,gamma);
+		//int j = findPairIndex(String.valueOf(gamma.get(findPairIndex(varName,gamma)).value),mu);
+		mu.get(findPairIndex(String.valueOf(gamma.get(findPairIndex(varName,gamma)).value),mu)).value = value;
 	}
 	
 	private int deleteVar(String varName) {
 		stackPointer--;
-		return mu.remove(gamma.remove(varName));
+		return mu.remove(findPairIndex(String.valueOf(gamma.remove(findPairIndex(varName,gamma)).value), mu)).value;
+	}
+	
+	private int deleteVarFuncResult(String varName, int funcResultIndex) {
+		stackPointer--;
+		gamma.remove(findPairIndex(varName,gamma));
+		return mu.remove(findPairIndex(String.valueOf(funcResultIndex), mu)).value;
 	}
 	
 	private int getVal(String varName) {
-		return mu.get(gamma.get(varName));
+		return mu.get(findPairIndex(String.valueOf(gamma.get(findPairIndex(varName,gamma)).value),mu)).value;
 	}
 
 	private int getMeaning(String name) {
@@ -323,14 +366,22 @@ public class SemanticSimulator {
 		boolean areParameters;
 		String[] parameters;
 		String[] stmts;
+		LinkedList<String> varsAdded;
+		int funcResultIndex;
 		
 		public Function(String funcLine) {
 		    funcName = getFuncName(funcLine);
 			isVoid = funcLine.charAt(0) != 'i';
 			parameters = getParamsFromFuncSig(funcLine);
 			stmts = funcLine.substring(funcLine.indexOf('{')+1,funcLine.indexOf('}')).trim().split("\\s*;\\s*");
+			varsAdded = new LinkedList<>();
+			funcResultIndex = 0;
 		}
-
+		
+		public Function() {
+			
+		}
+		
 		@Override
 		public String toString() {
 			StringBuilder str = new StringBuilder();
@@ -350,6 +401,23 @@ public class SemanticSimulator {
 			return str.toString();
 		}
 	}
+	
+	private class KeyValuePair {
+		String key;
+		Integer value;
+		
+		KeyValuePair(String k, Integer v) {
+			key = k;
+			value = v;
+		}
+		
+		@Override
+		public String toString() {
+			return "<" + (key) + ", " + (value == null ? "undef" : value) + ">";
+		}
+		
+	}
+	
 }
 
 

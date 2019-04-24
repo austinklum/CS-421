@@ -2,7 +2,8 @@ int a = 1;
 int b = 1;
 
 int funa(int i) {
-   funb(i);
+  funb(i);
+  return 0;
 }
 
 void funb(int z) {

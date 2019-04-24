@@ -2,5 +2,4 @@ int main() {
    int i = 4;
    int j = + i 1;
    int k = * 3 j;
-   return 0;
 }
