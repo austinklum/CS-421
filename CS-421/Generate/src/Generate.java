@@ -24,7 +24,7 @@ public class Generate {
 	    int numberOfServers = 250;
 	    int hostMax = 3; //max 3.254 // min 0.1
 	    BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-	    long tot = 0;
+	   
 	    //Total lines written per day 2,880,0000.
 	    // 1000 Serves * 2 CPU's * 1440 minutes in a day
 	    for (int time = 0; time < minutesInDay; time++ ) {
@@ -35,7 +35,6 @@ public class Generate {
 		    		tot += 2;
 		    		writer.write(timeStamp + " " + ipAddress + server + " 0 "+ (new Random().nextInt(100) + 1) + "\n");
 		    		writer.write(timeStamp + " " + ipAddress + server + " 1 "+ (new Random().nextInt(100) + 1) + "\n");
-		    		System.out.println(tot);
 		    	}
 		    	writer.flush();
 		    }
