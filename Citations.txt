@@ -1,0 +1,9 @@
+Soroker, Tali. “CLR vs JVM: How the Battle Between .NET and Java Extends to The VM-Level.” Java Code Geeks, 25 Jan. 2018, www.javacodegeeks.com/2018/02/clr-vs-jvm-battle-net-java-extends-vm-level.html.
+
+“Language-Integrated Query (LINQ) (C#).” Language-Integrated Query (LINQ) (C#) | Microsoft Docs, docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/.
+
+Venners, Bill, and Bruce Eckel. “Remaining Neutral on Checked Exceptions.” The Trouble with Checked Exceptions, www.artima.com/intv/handcuffs.html.
+
+Henriques, Luis, and Jorge Bernardino. “Performance of Memory Deallocation in C++ , C# and Java.” Association for Information Systems, 2018, aisel.aisnet.org/cgi/viewcontent.cgi?article=1009&context=capsi2018.
+
+“C# Style Properties in Java.” Benji's Blog -, benjiweber.co.uk/blog/2014/03/20/c-style-properties-in-java/.
